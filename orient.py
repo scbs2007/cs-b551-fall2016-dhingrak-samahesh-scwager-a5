@@ -1,7 +1,8 @@
 from processCorpus import ProcessCorpus
 from constants import Constants
 from nearest import Nearest
-from adaBoost import AdaBoost
+from adaBoostTrain import AdaBoostTrain
+from adaBoostTest import AdaBoostTest
 from neuralNet import NeuralNet
 from bestClassifier import BestClassifier
 import sys
@@ -18,7 +19,7 @@ else:
     print "Training model..."
 
     if classifierType == Constants.NEAREST:
-        processCorpus.creatingVector() 
+        processCorpus.creatingVector()
         print "Trained."
         print "Started classifying..."
         nearestObj = Nearest(outputFile, testFile, processCorpus)
@@ -27,8 +28,13 @@ else:
     
     elif classifierType == Constants.ADABOOST:
         processCorpus.creatingVector() 
-        stumpCount = sys.argv[Constants.FOUR]
-        adaBoostObj = AdaBoost(outputFile, testFile, stumpCount, processCorpus)
+        stumpCount = int(sys.argv[Constants.FOUR])
+        trainObj = AdaBoostTrain(stumpCount, processCorpus)
+        trainObj.train()
+        print "Trained."
+        print trainObj.allStumps0[0].pixelIndex1, trainObj.allStumps0[0].pixelIndex2, trainObj.allStumps0[0].alpha
+        print "Started classifying..."
+        adaBoostObj = AdaBoostTest(outputFile, testFile, trainObj)
         adaBoostObj.classify()
         adaBoostObj.displayResult()
 
