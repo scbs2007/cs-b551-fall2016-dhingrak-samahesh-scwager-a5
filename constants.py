@@ -9,6 +9,7 @@ class Constants:
     NINETY = 90
     ONE = 1
     ONE_EIGHTY = 180
+    ONE_NINETYONE = 191
     TWO = 2
     TWO_SEVENTY = 270
     THOUSAND = 1000
