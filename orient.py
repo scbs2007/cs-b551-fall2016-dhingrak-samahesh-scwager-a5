@@ -32,14 +32,14 @@ else:
         trainingObj = AdaBoostTrain(stumpCount, processCorpus)
         trainingObj.train()
         print "Trained."
-        pickle.dump(trainingObj, open('model' + str(stumpCount), "wb"))
-        '''
-        trainingObj = pickle.load(open('model' + str(stumpCount), "rb"))
+        #pickle.dump(trainingObj, open('model' + str(stumpCount), "wb"))
+        
+        #trainingObj = pickle.load(open('model' + str(stumpCount), "rb"))
         print "Started classifying..."
         testObj = AdaBoostTest(outputFile, testFile, trainingObj)
         testObj.classify()
         testObj.displayResult()
-        '''
+        
     elif classifierType == Constants.NNET:
         processCorpus.creatingVector() 
         hiddenCount = sys.argv[Constants.FOUR]
