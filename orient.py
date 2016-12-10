@@ -1,10 +1,11 @@
 from processCorpus import ProcessCorpus
 from constants import Constants
 from nearest import Nearest
-from adaBoost import AdaBoost
+from adaBoostTrain import AdaBoostTrain
+from adaBoostTest import AdaBoostTest
 from neuralNet import NeuralNet
 from bestClassifier import BestClassifier
-import sys
+import sys, pickle
 
 trainFile, testFile, classifierType = sys.argv[Constants.ONE:Constants.FOUR]
 classifiers = set([Constants.NEAREST, Constants.ADABOOST, Constants.NNET, Constants.BEST])
@@ -18,7 +19,7 @@ else:
     print "Training model..."
 
     if classifierType == Constants.NEAREST:
-        processCorpus.creatingVector() 
+        processCorpus.creatingVector()
         print "Trained."
         print "Started classifying..."
         nearestObj = Nearest(outputFile, testFile, processCorpus)
@@ -26,12 +27,19 @@ else:
         nearestObj.displayResult()
     
     elif classifierType == Constants.ADABOOST:
+        stumpCount = int(sys.argv[Constants.FOUR])
         processCorpus.creatingVector() 
-        stumpCount = sys.argv[Constants.FOUR]
-        adaBoostObj = AdaBoost(outputFile, testFile, stumpCount, processCorpus)
-        adaBoostObj.classify()
-        adaBoostObj.displayResult()
-
+        trainingObj = AdaBoostTrain(stumpCount, processCorpus)
+        trainingObj.train()
+        print "Trained."
+        #pickle.dump(trainingObj, open('model' + str(stumpCount), "wb"))
+        
+        #trainingObj = pickle.load(open('model' + str(stumpCount), "rb"))
+        print "Started classifying..."
+        testObj = AdaBoostTest(outputFile, testFile, trainingObj)
+        testObj.classify()
+        testObj.displayResult()
+        
     elif classifierType == Constants.NNET:
         processCorpus.creatingVector() 
         hiddenCount = sys.argv[Constants.FOUR]
