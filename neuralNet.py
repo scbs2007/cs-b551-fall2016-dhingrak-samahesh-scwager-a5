@@ -100,14 +100,15 @@ class NeuralNet:
         
     def build_model(self, X, Y, nn_hdim, iterations=10000):
 
-        learningRate = 0.5 # learning rate for gradient descent
+        prt = False
+        learningRate = 0.01 # learning rate for gradient descent
         reg_lambda = 0.00 # regularization strength
         nn_output_dim = Y.shape[0]
         m_inv = 1/X.shape[1] #inverse of number of examples for scaling
 
         #model weights and biases
-        w1 = 0.001*np.random.random( (nn_hdim, X.shape[0]) ) #- 0.00025
-        w2 = 0.001*np.random.random( (nn_output_dim, nn_hdim) ) #- 0.00025
+        w1 = 0.001*np.random.random( (nn_hdim, X.shape[0]) ) - 0.0005
+        w2 = 0.001*np.random.random( (nn_output_dim, nn_hdim) ) - 0.0005
         b1 = np.zeros( (nn_hdim, 1) )
         b2 = np.zeros( (nn_output_dim, 1) )
         
@@ -126,40 +127,50 @@ class NeuralNet:
 #             print x.shape, y.shape
     
             #Forward propagation
-#             print "w1"
-#             print w1[1:5,1:5]
+            if prt:
+                print "w1"
+                print w1[1:5,1:5]
+                print "w2"
+                print w2[1:5,1:5]
             z2 = np.dot(w1,x) + b1 #hidden layer input
-#             print "z2"
-#             print z2.shape
-#             print z2[1:5,1:5]
+            if prt:
+                print "z2"
+                print z2.shape
+                print z2[1:5,:]
             a2 = self.activation(z2, "sigmoid") #hidden layer activation
-#             print "a2"
-#             print a2.shape
-#             print a2[1:5,1:5]
+            if prt:
+                print "a2"
+                print a2.shape
+                print a2[1:5,:]
             z3 = np.dot(w2,a2) + b2 #output layer input
-#             print "z3"
-#             print z3.shape
-#             print z3[1:5,1:5]
+            if prt:
+                print "z3"
+                print z3.shape
+                print z3[1:5,:]
             a3 = self.activation(z3, "sigmoid") #output value
-#             print "a3"
-#             print a3.shape
+            if prt:
+                print "a3"
+                print a3.shape
             
             err = y - a3
-#             print "a3"
-#             print a3[1:5,1:5]
-#             print "err"
-#             print err[1:5,1:5]
+            if prt:
+                print "a3"
+                print a3[1:5,:]
+                print "err"
+                print err[1:5,:]
             loss = self.getLoss(a3,y,nn_output_dim) #sum of squared differences
             losses[i] = loss
-            if i % 100 == 0 or i <= 10: print ("i = ", i, "loss = ", loss)
+            if i % 1000 == 0 or i <= 10: print ("i = ", i, "loss = ", loss)
 
             #Backpropagation
             nl_delta = - err * self.activation_delta(a3, "sigmoid") #output layer delta: a(1-a) for sigmoid, 1-a**2 for tanh
-#             print "nl"
-#             print nl_delta
+            if prt:
+                print "nl"
+                print nl_delta
             l2_delta = np.dot(w2.T, nl_delta) * self.activation_delta(a2, "sigmoid") #hidden layer delta #transpose nl_delta?
-#             print "l2 delta"
-#             print l2_delta
+            if prt:
+                print "l2 delta"
+                print l2_delta[1:5,:]
             dw2 = np.dot(nl_delta, a2.T)
             dw1 = np.dot(l2_delta, x.T)
 #             db2 = np.sum( nl_delta, axis = 0, keepdims = True)
@@ -186,7 +197,7 @@ class NeuralNet:
         X = np.array(self.vector).T #192 x N
         y = self.oneHotIt_angle(self.imageIds) #4 x N
         
-        iterations = 100000
+        iterations = 1000000
         model, losses = self.build_model(X, y, self.hiddenCount, iterations = iterations)
         plt.plot(losses)
         self.saveModel(model)
