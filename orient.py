@@ -33,6 +33,7 @@ else:
         adaBoostObj.displayResult()
 
     elif classifierType == Constants.NNET:
+        processCorpus.creatingVector() 
         hiddenCount = sys.argv[Constants.FOUR]
         neuralNetObj = NeuralNet(outputFile, testFile, hiddenCount, processCorpus)
         neuralNetObj.classify()
