@@ -194,13 +194,14 @@ class NeuralNet:
         print ('Average Training Accuracy: ', accuracy)
         quit()
 
-        
         with open(self.testFile) as document:
             for image in document.read().split(Constants.NEW_LINE):
                 if image == Constants.EMPTY_STRING:
                     break 
                 imageList = image.split()
                 testImg = [int(pixelValue) for pixelValue in imageList[Constants.TWO:]]
+
+                #TODO CLASSIFICATION
 
                 ResultsHelper.updateConfidenceMatrix(int(imageList[Constants.ONE]), predictedOrientation, self.confusionMatrix)
                 #ResultsHelper.displayAccuracy(self.confusionMatrix)
