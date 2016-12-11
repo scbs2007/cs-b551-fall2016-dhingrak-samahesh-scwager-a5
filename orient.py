@@ -4,6 +4,7 @@ from nearest import Nearest
 from adaBoostTrain import AdaBoostTrain
 from adaBoostTest import AdaBoostTest
 from neuralNet import NeuralNet
+from neuralNetTest import NeuralNetTest
 from bestClassifier import BestClassifier
 import sys, pickle
 
@@ -44,8 +45,9 @@ else:
         processCorpus.creatingVector() 
         hiddenCount = sys.argv[Constants.FOUR]
         neuralNetObj = NeuralNet(outputFile, testFile, hiddenCount, processCorpus)
-        neuralNetObj.classify()
-        neuralNetObj.displayResult()
+        neuralNetObj.train()
+#         neuralNetObj.displayResult()
+        testObj = NeuralNetTest(outputFile, testFile)
 
     elif classifierType == Constants.BEST:
         pass

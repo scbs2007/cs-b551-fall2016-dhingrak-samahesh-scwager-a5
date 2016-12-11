@@ -24,20 +24,21 @@ class NeuralNet:
         self.imageIds = None
         self.vector = None
         
-    def saveModel(self, model, activations):
+    def saveModel(self, model, activation_hl, activation_ol):
         w1, b1, w2, b2 = model['w1'], model['b1'], model['w2'], model['b2']
-        np.savetxt('w1.txt', w1)
-        np.savetxt('w2.txt', w2)
-        np.savetxt('b1.txt', b1)
-        np.savetxt('b2.txt', b2)
-        np.savetxt('activation_functions.txt', activations)
+        np.savetxt('nnet_model/w1.txt', w1)
+        np.savetxt('nnet_model/w2.txt', w2)
+        np.savetxt('nnet_model/b1.txt', b1)
+        np.savetxt('nnet_model/b2.txt', b2)
+        with open("nnet_model/activations.txt", "w") as text_file:
+            text_file.write(activation_hl + " " + activation_ol)
     
     def readModel(self):
-        w1 = np.loadtxt('w1.txt')
-        w2 = np.loadtxt('w2.txt')
-        b1 = np.loadtxt('b1.txt')
-        b2 = np.loadtxt('b2.txt')
-        activations = np.loadtxt('activation_functions.txt')
+        w1 = np.loadtxt('nnet_model/w1.txt')
+        w2 = np.loadtxt('nnet_model/w2.txt')
+        b1 = np.loadtxt('nnet_model/b1.txt')
+        b2 = np.loadtxt('nnet_model/b2.txt')
+        activations = np.loadtxt('nnet_model/activation_functions.txt')
         return { 'w1': w1, 'b1': b1, 'w2': w2, 'b2': b2}, activations
   
     def oneHotIt(self, Y):
@@ -123,16 +124,15 @@ class NeuralNet:
             a3 = self.activation(z3, activation_ol) #output value
             err = y - a3
             
-            #loss and prediction error calculation
-            if i % 1000 == 0 or i <= 10: 
-                #for all examples in a batch
+            #loss and prediction error calculation over all examples in batch
+            if i % 1000 == 0: 
                 loss, predict_error = self.getLoss_training(X, Y, w1, w2, b1, b2, activation_hl, activation_ol) 
                 print "iter: ", i, "loss and prediction error for batch: ", loss, predict_error
                 losses.append(loss)
 
             #Backpropagation
-            nl_delta = - err * self.activation_delta(a3, activation_ol) #output layer delta: a(1-a) for sigmoid, 1-a**2 for tanh
-            l2_delta = np.dot(w2.T, nl_delta) * self.activation_delta(a2, activation_hl) #hidden layer delta #transpose nl_delta?
+            nl_delta = - err * self.activation_delta(a3, activation_ol) #output layer delta: a(1-a) for sigmoid, 1-a**2 for tanh, 1 for softmax
+            l2_delta = np.dot(w2.T, nl_delta) * self.activation_delta(a2, activation_hl)
             dw2 = np.dot(nl_delta, a2.T)
             dw1 = np.dot(l2_delta, x.T)
             db2 = nl_delta
@@ -158,7 +158,9 @@ class NeuralNet:
         activation_hl, activation_ol = "tanh", "softmax"
         iterations = int(1e8)
         model, losses = self.build_model(X, y, self.hiddenCount, activation_hl, activation_ol, iterations = iterations)
-        plt.plot(losses)
-        _, predict_error = self.getLoss_training(X, Y, model['w1'], model['w2'], model['b1'], model['b2'], activation_hl, activation_ol)
+        _, predict_error = self.getLoss_training(X, y, model['w1'], model['w2'], model['b1'], model['b2'], activation_hl, activation_ol)
         print "Prediction accuracy for training: ", 1 - predict_error
-        self.saveModel(model, (activation_hl, activation_ol))
+        self.saveModel(model, activation_hl, activation_ol)
+        plt.plot(losses)
+        plt.show()
+
