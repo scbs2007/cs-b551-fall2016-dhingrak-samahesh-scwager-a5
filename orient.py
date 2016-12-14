@@ -157,16 +157,20 @@ else:
         testObj = AdaBoostTest(outputFile, testFile, trainingObj)
         testObj.classify()
         testObj.displayResult()
-        
     elif classifierType == Constants.NNET:
         processCorpus.creatingVector() 
         hiddenCount = sys.argv[Constants.FOUR]
         neuralNetObj = NeuralNet(outputFile, testFile, hiddenCount, processCorpus)
         neuralNetObj.train()
-#         neuralNetObj.displayResult()
-        testObj = NeuralNetTest(outputFile, testFile)
+        print "Trained."
+        print "Started classifying..."
+        testObj = NeuralNetTest(outputFile, testFile, hiddenCount)
+        testObj.classify()
+        testObj.displayResult()
 
     elif classifierType == Constants.BEST:
-        pass
-    outputFile.close()
-    
+        testObj = NeuralNetTest(outputFile, testFile, 250, best = True)
+        testObj.classify()
+        testObj.displayResult()
+    outputFile.close()        
+
