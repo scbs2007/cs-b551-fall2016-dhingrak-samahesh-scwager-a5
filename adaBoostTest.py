@@ -68,7 +68,7 @@ class AdaBoostTest:
             print eachStump.getStumpProperties()
 
     def classify(self):
-        self.displayStumps()
+        #self.displayStumps()
         with open(self.testFile) as document:
             for image in document.read().split(Constants.NEW_LINE):
                 if image == Constants.EMPTY_STRING:
@@ -79,7 +79,8 @@ class AdaBoostTest:
                 ResultsHelper.updateConfidenceMatrix(int(imageList[Constants.ONE]), predictedOrientation, self.confusionMatrix)
                 #ResultsHelper.displayAccuracy(self.confusionMatrix)
                 self.outputFile.write(imageList[0] + Constants.SPACE + str(predictedOrientation) + Constants.NEW_LINE)
-                #print "Found orientation for: ", imageList[0], ': ', str(predictedOrientation)
+                #if predictedOrientation != int(imageList[Constants.ONE]):
+                print "Found orientation for: ", imageList[0], ': ', str(predictedOrientation), "Original orientation (given in Train): ", imageList[Constants.ONE]
 
     def displayResult(self):
         ResultsHelper.displayAccuracy(self.confusionMatrix)

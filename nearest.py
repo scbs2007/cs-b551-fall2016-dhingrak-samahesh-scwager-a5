@@ -14,14 +14,17 @@ class Nearest:
         self.vector = None
         self.imageIds = None
         #self.pool = ThreadPool(5)
-        self.rangeList = []
+
+        # Optimization - Generating this just once:
+        self.rangeImageLength = []
 
     def findEuclideanDist(self, image1, image2): #images):
-        # Removed math.sqrt for speed up
+        # Optimization - Removed math.sqrt for speed up
+
         #image1, image2 = images
         #return sum([(image1[index] - image2[index]) * (image1[index] - image2[index]) for index in range(Constants.IMAGE_LENGTH)])
         dist = 0
-        for index in self.rangeList:#(Constants.IMAGE_LENGTH):
+        for index in self.rangeImageLength:#(Constants.IMAGE_LENGTH):
             dist += (image1[index] - image2[index]) ** 2 
         return dist
 
@@ -42,7 +45,7 @@ class Nearest:
         return self.imageIds[str(minIndex)]
 
     def classify(self):
-        self.rangeList = [i for i in range(Constants.IMAGE_LENGTH)]
+        self.rangeImageLength = [i for i in range(Constants.IMAGE_LENGTH)]
         self.vector = self.processCorpusObj.getVector()
         self.imageIds = self.processCorpusObj.getImageIds()
         with open(self.testFile) as document:
@@ -55,7 +58,7 @@ class Nearest:
                 ResultsHelper.updateConfidenceMatrix(int(imageList[Constants.ONE]), predictedOrientation, self.confusionMatrix)
                 #ResultsHelper.displayAccuracy(self.confusionMatrix)
                 self.outputFile.write(imageList[0] + Constants.SPACE + str(predictedOrientation) + Constants.NEW_LINE)
-                #print "Found orientation for: ", imageList[0] + ': ' + str(predictedOrientation) 
+                print "Found orientation for: ", imageList[0], ': ', str(predictedOrientation), "Original orientation (given in Train): ", imageList[Constants.ONE]
         #self.pool.close()
         #self.pool.join()
 

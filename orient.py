@@ -6,7 +6,8 @@ from adaBoostTest import AdaBoostTest
 from neuralNet import NeuralNet
 from neuralNetTest import NeuralNetTest
 from bestClassifier import BestClassifier
-import sys, pickle
+import sys
+#, pickle
 
 trainFile, testFile, classifierType = sys.argv[Constants.ONE:Constants.FOUR]
 classifiers = set([Constants.NEAREST, Constants.ADABOOST, Constants.NNET, Constants.BEST])
@@ -29,12 +30,12 @@ else:
     
     elif classifierType == Constants.ADABOOST:
         stumpCount = int(sys.argv[Constants.FOUR])
+        
         processCorpus.creatingVector() 
         trainingObj = AdaBoostTrain(stumpCount, processCorpus)
         trainingObj.train()
         print "Trained."
-        #pickle.dump(trainingObj, open('model' + str(stumpCount), "wb"))
-        
+        #pickle.dump(trainingObj, open('../cv_set4_750/model' + str(stumpCount), "wb"))        
         #trainingObj = pickle.load(open('model' + str(stumpCount), "rb"))
         print "Started classifying..."
         testObj = AdaBoostTest(outputFile, testFile, trainingObj)
