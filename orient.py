@@ -20,14 +20,14 @@ Result:
 
 Accuracy Percentage:  67.48
 Confidence Matrix: 
-	0°	90°	180°	270°
-0°	153	21	36	24	
+	0Â°	90Â°	180Â°	270Â°
+0Â°	153	21	36	24	
 
-90°	18	146	18	30	
+90Â°	18	146	18	30	
 
-180°	37	26	145	13	
+180Â°	37	26	145	13	
 
-270°	21	31	19	166
+270Â°	21	31	19	166
 
 AdaBoost: We have formalized usage of ada boost as:
 For each iteration of Adaboost we build 4 stumps - one each for the 4 degrees: 0, 90, 180, 270. 
@@ -54,14 +54,14 @@ Result:
 
 Accuracy Percentage:  70.2
 Confidence Matrix: 
-	0°	90°	180°	270°
-0°	169	34	24	12	
+	0Â°	90Â°	180Â°	270Â°
+0Â°	169	34	24	12	
 
-90°	21	172	9	22	
+90Â°	21	172	9	22	
 
-180°	40	31	150	15	
+180Â°	40	31	150	15	
 
-270°	29	38	6	171
+270Â°	29	38	6	171
 
 Neural network:
 Input is the raw data: each x-values is a 192D vector of rgb values. They are not processed.
@@ -99,14 +99,14 @@ Result:
 
 Accuracy Percentage:  76.44
 Confidence Matrix: 
-	0°	90°	180°	270°
-0°	175	12	33	14
+	0Â°	90Â°	180Â°	270Â°
+0Â°	175	12	33	14
 
-90° 	12 	167 	13 	20
+90Â° 	12 	167 	13 	20
 
-180° 	33 	16 	162 	10
+180Â° 	33 	16 	162 	10
 
-270° 	13 	25 	12 	187 
+270Â° 	13 	25 	12 	187 
 
 
 Best:
