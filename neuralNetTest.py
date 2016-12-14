@@ -6,12 +6,15 @@ import numpy as np
 import scipy.sparse
 
 class NeuralNetTest:
-    def __init__(self, nearestOutputFile, testFile, hiddenCount):
+    def __init__(self, nearestOutputFile, testFile, hiddenCount, best = False):
         self.confusionMatrix = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
         self.outputFile = nearestOutputFile
         self.testFile = testFile
         self.hiddenCount = int(hiddenCount)
-        self.modelDirectory = 'nnet_model'
+        if best:
+            self.modelDirectory = 'nnet_best_model'
+        else:
+            self.modelDirectory = 'nnet_model'
         
     def readModel(self):
         w1 = np.loadtxt(self.modelDirectory+'/' + str(self.hiddenCount) + '_w1.txt')
