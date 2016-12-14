@@ -68,31 +68,9 @@ Input is the raw data: each x-values is a 192D vector of rgb values. They are no
 The output is a oneHotIt matrix of the four possible rotations.
 Weights are set to small values uniformly distributed around 0.
 The output activation function is softmax, while the hidden layer can be sigmoid, tanh, relu, or softmax.
+The network is trained using stochastic gradient descent.
 
-The first two parameters tested for were the dimension of the hidden layer and the hidden layer activation function. 
-Having fixed the following parameters:
---> Number of iterations = 7*1e6
---> Step size for iteration i = 0.01 / (1 + 100*i/iterations) * (1/m), m is number of examples
-Testing values ranging from 50 to 300 with increments of 50, for both reLU
---> The results were best between 150 and 200, near the dimensionality of the data, with testing accuracy of 71.79% (best: ReLU nn_hdim = 200)
-Using tanh or or reLU as the hidden layer activation function gave test accuracy with a difference less than .5%.
-
-ReLU was chosen for two further tests:
-(1) check the effect of decreasing the step size 100 times less. The new function was:
-    Step size for iteration i = 0.01 / (1 + i/iterations) * (1/m), m is number of examples
-    Number of iterations = 7*1e6
---> Training accuracy increased from 70-72% to 76-77%.
---> Testing accuracy increased from 70-72% to 74-76%.
---> We also tested for smaller hidden layer dimensions: 10 and 25, noticing that the results were no worse than those of higher dimensions.
-This result is in line with the fact that adaBoost reached its best performance using only 20 features. We assume there is much redundancy in 
-the image data and all learning algorithms work efficiently with the key features.
-
-(2) check the effect of adding many more iterations
-    Number of iterations = 1e7:
-    Step size for iteration i = 0.01 / (1 + i/iterations) * (1/m), m is number of examples
---> Training accucary increased from 76-77% to 77-78%.
---> Testing accuracy increased from 74-76% to 75-77%
-
+As described in the report:
 The overall best result of 76.44% testing accuracy was achieved with 1e7 iterations, 250 hidden nodes, and step size function i = 0.01 / (1 + i/iterations) * (1/m)
 
 Result:
