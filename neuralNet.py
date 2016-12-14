@@ -23,6 +23,9 @@ The output is a oneHotIt matrix of the four possible rotations.
 Weights are set to small values uniformly distributed around 0.
 The output activation function is softmax, while the hidden layer can be sigmoid, tanh, relu, or softmax.
 
+TO RUN:
+set the iteration count in train(). It is currently set to a low value for speed. 
+
 The first two parameters tested for were the dimension of the hidden layer and the hidden layer activation function. 
 Having fixed the following parameters:
     Number of iterations = 7*1e6
@@ -166,7 +169,7 @@ class NeuralNet:
             #loss and prediction error calculation over all examples in batch
             if i % 1000 == 0: 
                 loss, predict_error = self.getLoss_training(X, Y, w1, w2, b1, b2, activation_hl, activation_ol) 
-                #print "iter: ", i, "loss and prediction error for batch: ", loss, predict_error
+                print "iter: ", i, "loss and prediction error for batch: ", loss, predict_error
                 losses.append(loss)
                 prediction_errors.append(predict_error)
 
@@ -194,8 +197,8 @@ class NeuralNet:
         self.vectorLength = len(self.vector)
         X = self.normalize(np.array(self.vector).T) #192 x N
         y = self.oneHotIt_angle(self.imageIds) #4 x N
-        activation_hl, activation_ol = "tanh", "softmax"
-        iterations = int(7*1e6)
+        activation_hl, activation_ol = "relu", "softmax"
+        iterations = int(1e4)
         model, losses, prediction_error = self.build_model(X, y, self.hiddenCount, activation_hl, activation_ol, iterations = iterations)
         _, predict_error = self.getLoss_training(X, y, model['w1'], model['w2'], model['b1'], model['b2'], activation_hl, activation_ol)
         print "activation functions used: ", activation_hl, activation_ol
