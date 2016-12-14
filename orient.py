@@ -12,6 +12,7 @@ gets created.
 5. adaBoostTest.py is where we test the given test images on the trained adaboost model.
 6. neuralNet.py is the file where the Neural Net has been implemented
 7. neuralNetTest.py is where the testing of the nnet on the given test images takes place.
+8. stump.py is a class for storing the parameters for a stump.
 
 1-Nearest: This implementation is straight forward. For each given test image we calculate its euclidean distance from each training image, and find the smallest
 distance among all. That image's orientation is the one we assign to the test image.
@@ -44,7 +45,7 @@ degree classifier.
 - We now find the beta value, which is = (1 - S)/ (S)
 - Then we update the weights of the vectors which were correctl classified by multiplying them with beta.
 - Next we find the alpha value which represents the confidence vote of the found stump in the overall decision.
-- This completes the first iteration of ada boost.
+- This completes the first iteration of ada boost and we store pixel1, pixel2 values and the alpha for this stump in a Stump obj.
 And the above process is repeated for the stump count number entered by the user.
 
 We experimented with parameters for Adaboost as explained in Report.docx and found the best accuracy for the model with 75 stumps where each stump was found
